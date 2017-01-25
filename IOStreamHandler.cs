@@ -7,8 +7,8 @@ namespace TEST2
 {
     class IOStreamHandler: IStreamHandler
     {
-        private SslStream SSL_Stream;
-        private static int bufSize = 2048;
+        private static int bufSize;
+        private int readBytesSize;
         private string fileName;
         private long fileSize;
         FileStream downWriter;
@@ -17,8 +17,32 @@ namespace TEST2
         private byte[] sendBuffer;
         private byte[] bytedFileName;
         private byte[] bytedFileSize;
+
+        private SslStream ssl_stream;
+        public SslStream SSL_Stream
+        {
+            get
+            {
+                return ssl_stream;
+            }
+            private set
+            {
+                ssl_stream = value;
+            }
+        }
+
+        public IOStreamHandler(SslStream _SSL_Stream)
+        {
+            this.SSL_Stream = _SSL_Stream;
+            this.bufSize = 2048;
+        }
+
         void IStreamHandler.ClearBuffers()
         {
+            fileName = "";
+            fileSize = 0;
+            readBytesSize = 0;
+            receiveBuffer = new byte[bufSize];
             downWriter.Close();
             downWriter.Dispose();
         }
@@ -28,19 +52,19 @@ namespace TEST2
             if (SSL_Stream.CanRead)
             {
                 //Reading first field of incoming packet - name of the file
-                int bytesSize = SSL_Stream.Read(receiveBuffer, 0, bufSize);
-                fileName = Encoding.Unicode.GetString(receiveBuffer, 0, bytesSize);
+                readBytesSize = SSL_Stream.Read(receiveBuffer, 0, bufSize);
+                fileName = Encoding.Unicode.GetString(receiveBuffer, 0, readBytesSize);
 
                 //Reading second field of incoming packet - size of the file
                 receiveBuffer = new byte[bufSize];
-                bytesSize = SSL_Stream.Read(receiveBuffer, 0, bufSize);
+                readBytesSize = SSL_Stream.Read(receiveBuffer, 0, bufSize);
                 fileSize = Convert.ToInt64(Encoding.Unicode.GetString(receiveBuffer, 0, receiveBuffer.Length));
 
                 //Reading file content
                 receiveBuffer = new byte[fileSize];
                 downWriter = File.Create(savingFolderPath + fileName);
-                bytesSize = SSL_Stream.Read(receiveBuffer, 0, receiveBuffer.Length);
-                downWriter.Write(receiveBuffer, 0, bytesSize);
+                readBytesSize = SSL_Stream.Read(receiveBuffer, 0, receiveBuffer.Length);
+                downWriter.Write(receiveBuffer, 0, readBytesSize); 
             }
         }
 
