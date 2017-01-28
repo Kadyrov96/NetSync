@@ -13,7 +13,7 @@ namespace TEST2
         private long fileSize;
         FileStream downWriter;
 
-        private byte[] receiveBuffer = new byte[bufSize];
+        private byte[] receiveBuffer;
         private byte[] sendBuffer;
         private byte[] bytedFileName;
         private byte[] bytedFileSize;
@@ -35,6 +35,7 @@ namespace TEST2
         {
             this.SSL_Stream = _SSL_Stream;
             this.bufSize = 2048;
+            this.receiveBuffer = new byte[bufSize];
         }
 
         void IStreamHandler.ClearBuffers()
