@@ -15,6 +15,8 @@ namespace TEST2
             byted_data_hash = md5hashFunc.ComputeHash(byteInput);
 
             stringBuilder = new StringBuilder();
+            // Loop through each byte of the hashed data 
+            // and format each one as a hexadecimal string.
             for (int i = 0; i < byted_data_hash.Length; i++)
             {
                 stringBuilder.Append(byted_data_hash[i].ToString("x2"));
