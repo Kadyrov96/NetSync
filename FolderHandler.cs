@@ -1,10 +1,18 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Windows.Forms;
 
 namespace TEST2
 {
     class FolderHandler
     {
+        private List<string> folderElementsList;
+
+        public FolderHandler()
+        {
+            folderElementsList = new List<string>();
+        }
+
         private string folderPath;
         public string FolderPath
         {
@@ -39,6 +47,24 @@ namespace TEST2
                 FolderPath = folderBrowserDialog.SelectedPath;
                 FolderElements = Directory.GetFileSystemEntries(folderPath);
             }
+        }
+        
+        public bool IsFolderEmpty()
+        {
+            if (folderElements.Length == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public void CreateServiceFile(string _full_file_path)
+        {
+            FileStream serviceFileCreator = File.Create(_full_file_path);
+            serviceFileCreator.Close();
         }
     }
 }
