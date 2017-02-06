@@ -45,7 +45,7 @@ namespace TEST2
 
                 //Reading file content
                 receiveBuffer = new byte[fileSize];
-                FileStream downWriter = File.Create(savingFolderPath + fileName);
+                FileStream downWriter = File.Create(savingFolderPath + @"\" + fileName);
                 readBytesSize = SSL_Stream.Read(receiveBuffer, 0, receiveBuffer.Length);
                 downWriter.Write(receiveBuffer, 0, readBytesSize);
 
