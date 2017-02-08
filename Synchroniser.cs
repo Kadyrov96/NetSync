@@ -29,7 +29,7 @@ namespace TEST2
         public Synchroniser(FolderHandler _folderToSync)
         {
             folderToSync = _folderToSync;
-            syncDataStoreFullPath = Directory.GetCurrentDirectory() + Hasher.GetMd5Hash(folderToSync.FolderPath);
+            syncDataStoreFullPath = Directory.GetCurrentDirectory() + Hasher.GetStringHash(folderToSync.FolderPath);
             local_folderToSyncElements = new List<FileDescript>();
 
             local_list = new SyncRecordList();
@@ -165,9 +165,7 @@ namespace TEST2
                 if (searchIndex >= 0)
                 {
                     string readenHash = tmpHashList[searchIndex];
-                    byte[] folderElemBuffer = File.ReadAllBytes(folderToSync.FolderElements[i]);
-
-                    if (Hasher.GetMd5Hash(folderElemBuffer) == readenHash)
+                    if (Hasher.GetFileHash(folderToSync.FolderElements[i]) == readenHash)
                     {
                         AddLocalSyncElements(Path.GetFileName(syncDataStoreRecords_List[i]), 0);
                         tmpNamesList.RemoveAt(searchIndex);
@@ -197,12 +195,9 @@ namespace TEST2
             //Creating and filling the file, that includes synchronization data of the concrete folder
             folderToSync.CreateServiceFile(syncDataStoreFullPath + @".dat");
             StreamWriter hashTableWriter = new StreamWriter(syncDataStoreFullPath + @".dat");
-
-            byte[] folderElementBuffer;
             for (int i = 0; i < folderToSync.FolderElements.Length; i++)
             {
-                folderElementBuffer = File.ReadAllBytes(folderToSync.FolderElements[i]);
-                hashTableWriter.WriteLine(folderToSync.FolderElements[i] + "***" + Hasher.GetMd5Hash(folderElementBuffer));
+                hashTableWriter.WriteLine(folderToSync.FolderElements[i] + "***" + Hasher.GetFileHash(folderToSync.FolderElements[i]));
                 AddLocalSyncElements(Path.GetFileName(folderToSync.FolderElements[i]), 0);
             }
             //System.Windows.MessageBox.Show("Full directory was succesfully synchronized with database");
@@ -210,7 +205,7 @@ namespace TEST2
             hashTableWriter.Dispose();
         }
 
-        public void ReadSyncDataStore()
+        public void CheckLocalChanges()
         {
             string[] syncDataStoreRecords = File.ReadAllLines(syncDataStoreFullPath + @".dat");
             syncDataStoreRecords_List = new List<string>(syncDataStoreRecords);
