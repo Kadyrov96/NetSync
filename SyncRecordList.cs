@@ -9,7 +9,7 @@ namespace TEST2
         {
             private set
             {
-                count = namesList.Count;
+                count = names.Count;
             }
             get
             {
