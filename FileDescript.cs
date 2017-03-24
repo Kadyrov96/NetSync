@@ -1,4 +1,4 @@
-﻿namespace TEST2
+﻿namespace NetSync_WinDesktop
 {
     class FileDescript
     {
@@ -8,8 +8,8 @@
         // 2 - файл был создан
         // 3 - файл был удален  
 
-        public string elementName { get; set; }
-        public int modificationFlag { get; set; }
+        public string ElementName { get; set; }
+        public int ModificationFlag { get; set; }
 
     }
 }
