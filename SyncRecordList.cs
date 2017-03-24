@@ -1,23 +1,23 @@
 ﻿using System.Collections.Generic;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
     class SyncRecordList
     {
-        private int count;
+        public List<string> names;
+        public List<int> keys;
         public int Count
         {
             private set
             {
-                count = names.Count;
+                Count = names.Count;
             }
             get
             {
-                return count;
+                return Count;
             }
         }
-        public List<string> names;
-        public List<int> keys;
+
         public SyncRecordList()
         {
             names = new List<string>();
@@ -35,6 +35,5 @@ namespace TEST2
             names.RemoveAt(index);
             keys.RemoveAt(index);
         }
-
     }
 }

@@ -2,7 +2,7 @@
 using System.IO;
 using System;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
     class Synchroniser
     {
@@ -45,7 +45,7 @@ namespace TEST2
         private void AddLocalSyncElements(string elemName, int elemFlag)
         {
             local_folderToSyncElements.Add(
-                new FileDescript { elementName = elemName, modificationFlag = elemFlag });
+                new FileDescript { ElementName = elemName, ModificationFlag = elemFlag });
         }
 
         private void SwitchIfNotChanged(int _remoteIndex, int _localIndex)
@@ -53,19 +53,15 @@ namespace TEST2
             switch (remote_list.keys[_remoteIndex])
             {
                 case 0:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEmpty.Source, imageOk.Source, 140));
                     remote_list.RemoveAt(_remoteIndex);
                     break;
                 case 1:
-                    //listView1.Items.Add(new FileItem(syncDirPath+localNamesList[i], imageImport.Source, imageWait.Source, 140));
-                    //download_count++;
                     downloadList.Add(remote_list.names[_remoteIndex]);
                     remote_list.RemoveAt(_remoteIndex);
                     break;
                 case 2:
                     break;
                 case 3:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageDel.Source, imageWait.Source, 140));
                     localDelList.Add(local_list.names[_localIndex]);
                     remote_list.RemoveAt(_remoteIndex);
                     break;
@@ -77,18 +73,13 @@ namespace TEST2
             switch (remote_list.keys[_remoteIndex])
             {
                 case 0:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageExport.Source, imageWait.Source, 140));
                     uploadList.Add(local_list.names[_localIndex]);
                     remote_list.RemoveAt(_remoteIndex);
                     break;
                 case 1:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEr.Source, imageWait.Source, 140));
-                    break;
                 case 2:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEr.Source, imageWait.Source, 140));
                     break;
                 case 3:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageDel.Source, imageWait.Source, 140));
                     localDelList.Add(local_list.names[_localIndex]);
                     remote_list.RemoveAt(_remoteIndex);
                     break;
@@ -100,18 +91,13 @@ namespace TEST2
             switch (remote_list.keys[_remoteIndex])
             {
                 case 0:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageDel.Source, imageWait.Source, 140));
                     remoteDelList.Add(local_list.names[_localIndex]);
                     remote_list.RemoveAt(_remoteIndex);
                     break;
                 case 1:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEr.Source, imageWait.Source, 140));
-                    break;
                 case 2:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEr.Source, imageWait.Source, 140));
                     break;
                 case 3:
-                    //listView1.Items.Add(new FileItem(syncDirPath + localNamesList[i], imageEmpty.Source, imageOk.Source, 140));
                     remote_list.RemoveAt(_remoteIndex);
                     break;
             }
@@ -235,10 +221,10 @@ namespace TEST2
             }
 
             foreach (var file in local_folderToSyncElements)
-                local_list.AddRecord(file.elementName, file.modificationFlag);
+                local_list.AddRecord(file.ElementName, file.ModificationFlag);
         }
 
-        public void CompareDevicesSyncData()
+        public string CompareDevicesSyncData()
         {
             //Searching for remote syncDataStore file
             string[] searchResults = Directory.GetFiles(Directory.GetCurrentDirectory(), @"_rem.txt", SearchOption.AllDirectories);
@@ -267,10 +253,14 @@ namespace TEST2
             {
                 System.Windows.Forms.MessageBox.Show("Файл с удаленного устройства не найден");
             }
+
+            CreateExchangeFile();
+
+            return syncDataStoreFullPath + "_configure" + @".txt";
         }
 
         //Create and fill configure file, which includes data about files, that have to be downloaded or deleted
-        public void CreateExchangeFile()
+        private void CreateExchangeFile()
         {
             folderToSync.CreateServiceFile(syncDataStoreFullPath + "_configure" + @".txt");
             StreamWriter configWriter = new StreamWriter(syncDataStoreFullPath + "_configure" + @".txt");

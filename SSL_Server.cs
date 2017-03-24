@@ -5,7 +5,7 @@ using System.Net.Security;
 using System.Security.Authentication;
 using System.Security.Cryptography.X509Certificates;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
     public class SSL_Server
     {
@@ -17,7 +17,7 @@ namespace TEST2
         public SSL_Server()
         {
             string host = Dns.GetHostName();
-            serverCertificate = new X509Certificate2(@"C:\Users\Admin\Desktop\123.pfx", "vbhs456");
+            //serverCertificate = new X509Certificate2(@"C:\Users\Admin\Desktop\123.pfx", "vbhs456");
             listener = new TcpListener(Dns.GetHostEntry(host).AddressList[0], 816);
         }
         internal void RunServer()
@@ -51,7 +51,7 @@ namespace TEST2
         internal void StopServer()
         {
             sslStream.Close();
-            client.Dispose();
+            client.Client.Dispose();
             listener.Stop();
         }
     }

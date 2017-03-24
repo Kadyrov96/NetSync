@@ -3,31 +3,18 @@ using System.IO;
 using System.Net.Security;
 using System.Text;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
     class IOStreamHandler: IStreamHandler
     {
         private static int bufSize;
-        private SslStream ssl_stream;
-
-        public SslStream SSL_Stream
-        {
-            get
-            {
-                return ssl_stream;
-            }
-            private set
-            {
-                ssl_stream = value;
-            }
-        }
+        public SslStream SSL_Stream { get; private set; }
 
         public IOStreamHandler(SslStream _SSL_Stream)
         {
             SSL_Stream = _SSL_Stream;
             bufSize = 2048;
         }
-
         void IStreamHandler.ReceiveData(string savingFolderPath)
         {
             if (SSL_Stream.CanRead)
@@ -79,6 +66,26 @@ namespace TEST2
                 sendBuffer = File.ReadAllBytes(filePath);
                 SSL_Stream.Write(sendBuffer, 0, sendBuffer.Length);
             }
+        }
+
+        string IStreamHandler.ReceiveString()
+        {
+            throw new NotImplementedException();
+        }
+
+        int IStreamHandler.ReceiveNum()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IStreamHandler.SendString()
+        {
+            throw new NotImplementedException();
+        }
+
+        void IStreamHandler.SendNum()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -2,10 +2,16 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
+    /// <summary>
+    /// Provides methods to get hashes of files and strings.
+    /// </summary>
     class Hasher
     {
+        /// <summary>
+        /// Gets hash value of input array of bytes.
+        /// </summary>
         private static string GetHash(byte[] byteInput)
         {
             MD5 md5hashFunc = MD5.Create();
@@ -21,12 +27,18 @@ namespace TEST2
             return stringBuilder.ToString();
         }
 
+        /// <summary>
+        /// Gets hash value of the file, which path is specified in param.
+        /// </summary>
         internal static string GetFileHash(string filePath)
         {
             byte[] bytesOfFile = File.ReadAllBytes(filePath);
             return GetHash(bytesOfFile);
         }
 
+        /// <summary>
+        /// Gets hash value of the string specified in param.
+        /// </summary>
         internal static string GetStringHash(string stringInput)
         {
             byte[] bytesOfString = Encoding.UTF8.GetBytes(stringInput);

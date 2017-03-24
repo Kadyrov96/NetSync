@@ -2,63 +2,38 @@
 using System.IO;
 using System.Windows.Forms;
 
-namespace TEST2
+namespace NetSync_WinDesktop
 {
     class FolderHandler
     {
         private List<string> folderElementsList;
+        public string FolderPath { get; private set; }
+        public string[] FolderElements { get; private set; }
 
         public FolderHandler()
         {
             folderElementsList = new List<string>();
         }
 
-        private string folderPath;
-        public string FolderPath
+        public FolderHandler(string _folderPath)
         {
-            private set
-            {
-                folderPath = value;
-            }
-            get
-            {
-                return folderPath;
-            }
+            folderElementsList = new List<string>();
+            FolderPath = _folderPath;
+            FolderElements = Directory.GetFileSystemEntries(FolderPath);
         }
-
-        private string[] folderElements;
-        public string[] FolderElements
-        {
-            private set
-            {
-                folderElements = value;
-            }
-            get
-            {
-                return folderElements;
-            }
-        }
-
         public void SelectFolder()
         {
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
             {
                 FolderPath = folderBrowserDialog.SelectedPath;
-                FolderElements = Directory.GetFileSystemEntries(folderPath);
+                FolderElements = Directory.GetFileSystemEntries(FolderPath);
             }
         }
         
         public bool IsFolderEmpty()
         {
-            if (folderElements.Length == 0)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return FolderElements.Length == 0;
         }
 
         public void CreateServiceFile(string _full_file_path)
